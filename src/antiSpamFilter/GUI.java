@@ -75,13 +75,43 @@ public class GUI {
 			text1.setBackground(Color.WHITE);
 			text1.setColumns(30);
 			
+			text1.addActionListener(new ActionListener() {
+			      public void actionPerformed(ActionEvent e) {
+			    	  if(! text1.getText().isEmpty()){
+			    		  String str1=text1.getText();
+			    		  DataManagement.fillRules(str1);
+			    		  System.out.println("passou1");
+			    	  }
+			      }
+			    });
+			
 			text2= new JTextField();
 			text2.setBackground(Color.WHITE);
 			text2.setColumns(30);
 			
+			text2.addActionListener(new ActionListener() {
+			      public void actionPerformed(ActionEvent e) {
+			    	  if(! text2.getText().isEmpty()){
+			    		  String str2=text2.getText();
+			    		  DataManagement.fillHam(str2);
+			    		  System.out.println("passou2");
+			    	  }
+			      }
+			    });
+			
 			text3= new JTextField();
 			text3.setBackground(Color.WHITE);
 			text3.setColumns(30);
+			
+			text3.addActionListener(new ActionListener() {
+			      public void actionPerformed(ActionEvent e) {
+			    	  if(! text3.getText().isEmpty()){
+			    		  String str3=text3.getText();
+			    		  DataManagement.fillSpam(str3);
+			    		  System.out.println("passou3");
+			    	  }
+			      }
+			    });
 			
 			rulescheck= new JCheckBox();
 			hamcheck= new JCheckBox();
