@@ -144,7 +144,7 @@ public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, L
 		}
 
 		setFN(FN,temp);
-		//setFP(FP,temp);
+		setFP(FP,temp);
 
 	}
 	
@@ -160,4 +160,24 @@ public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, L
 		FN.setText("");
 		FN.setText(Integer.toString(fn));
 	}
+	
+	private static void setFP(JTextField FP, List<Email> temp) {
+
+
+		int fp=0;
+		for(Email e: temp) {
+			for(Email s:spam) {
+				if(e.getName().equals(s.getName()) && e.getType().equals("HAM")) {
+					fp++;
+				}
+			}
+		}
+
+		FP.setText("");
+		FP.setText(Integer.toString(fp));
+	}
+
+
 }
+
+
