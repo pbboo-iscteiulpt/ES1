@@ -2,6 +2,7 @@ package antiSpamFilter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -177,7 +178,20 @@ public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, L
 		FP.setText(Integer.toString(fp));
 	}
 	
-	
+	public static void Save(List <Rule> list){
+		
+		try {
+			PrintWriter pw= new PrintWriter(new File("ficheiros/rules.cf"));
+			for(Rule r: list){
+				pw.println(r.toString());
+			}
+			pw.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 
 }

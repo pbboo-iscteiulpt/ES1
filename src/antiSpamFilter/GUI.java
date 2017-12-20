@@ -167,6 +167,13 @@ public class GUI {
 
 		JButton GravarMan = new JButton("Gravar");
 		GravarMan.setBounds(300, 72, 89, 23);
+		GravarMan.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				DataManagement.Save(ManList);
+			}
+		});
 		panel2.add(GravarMan);
 
 		//headers for the table
@@ -237,6 +244,13 @@ public class GUI {
 
 		JButton GravarAuto = new JButton("Gravar");
 		GravarAuto.setBounds(300, 72, 89, 23);
+		GravarAuto.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				DataManagement.Save(AutoList);
+			}
+		});
 		panel3.add(GravarAuto);
 
 		JButton AvaliarAuto = new JButton("Avaliar");
