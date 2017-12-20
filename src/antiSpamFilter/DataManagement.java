@@ -114,6 +114,40 @@ public class DataManagement {
 		return ham;
 	}
 	
+public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, List<Rule> rules) {
+		
+		ArrayList<Email> temp = new ArrayList<Email>();
+
+		if(s==true) {
+			temp.addAll(spam);
+		}
+		if(h==true) {
+			temp.addAll(ham);
+		}
+
+		for(Email e:temp) {
+			double a=0;
+			for(String p: e.getTags()) {
+				for(Rule r:rules) {
+					if(p.equals(r.getName())) {
+						a = a + r.getValue();
+					}
+				}
+			}
+			if(a>=5) {
+				e.setType("SPAM");
+			}
+			else {
+				e.setType("HAM");
+			}
+
+		}
+
+		setFN(FN,temp);
+		//setFP(FP,temp);
+
+	}
+	
 	public static void setFN(JTextField FN, List<Email> temp){
 		int fn = 0;
 		for(Email e : temp){
