@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
@@ -170,6 +176,22 @@ public class GUI {
 
 		ManTable = new JTable(ManModel);
 
+		ManTable.addContainerListener(new ContainerListener() {
+
+			@Override
+			public void componentRemoved(ContainerEvent arg0) {
+
+				savetoList(ManTable.getModel(), ManList);
+			}
+
+			@Override
+			public void componentAdded(ContainerEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+
 		JScrollPane ManscrollPane = new JScrollPane(ManTable);
 		ManscrollPane.setBounds(10, 10, 250, 130);
 		panel2.add(ManscrollPane);
@@ -235,10 +257,14 @@ public class GUI {
 		//create table with data
 		DefaultTableModel AutoModel = new DefaultTableModel(null, columns);
 
-		AutoTable = new JTable(AutoModel);
 
+		AutoTable = new JTable(AutoModel);
+		
+		AutoTable.setEnabled(false);
+		
 		JScrollPane AutoscrollPane = new JScrollPane(AutoTable);
 		AutoscrollPane.setBounds(10, 10, 250, 130);
+
 		panel3.add(AutoscrollPane);
 
 		JLabel FN = new JLabel("FN:");
@@ -293,5 +319,24 @@ public class GUI {
 		AutoTable.setModel(AutoModel);
 		ManTable.setModel(ManModel);
 	}
+
+	public void savetoList(TableModel table, List<Rule> list) {
+
+		list.clear();
+
+		for(int row = 0; row < table.getRowCount(); row++) {
+
+			String s = (String) table.getValueAt(row,0);
+			String b = (String) String.valueOf(table.getValueAt(row,1));
+			
+			Rule a = new Rule(s,Integer.parseInt(b));
+			System.out.println("Nome  " + a.getName());
+			System.out.println("valor  " + a.getValue());
+			list.add(a); 
+
+
+		}
+	}
+
 
 }

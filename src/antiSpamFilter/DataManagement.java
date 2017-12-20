@@ -176,6 +176,8 @@ public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, L
 		FP.setText("");
 		FP.setText(Integer.toString(fp));
 	}
+	
+	
 
 
 }
