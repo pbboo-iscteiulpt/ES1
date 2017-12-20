@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -41,14 +43,15 @@ public class GUI {
 	//Objetos do painel2
 	private JTextField ManFN;
 	private JTextField ManFP;
-	private JList<Rule> ManList;
-	
+	private List<Rule> ManList;
+	private JTable ManTable;
 
 	//Objetos do painel3
 	private JTextField AutoFN;
 	private JTextField AutoFP;
-	private JList<Rule> AutoList = new JList<Rule>();
+	private List<Rule> AutoList;
 	private JTable AutoTable;
+	
 	
 		GUI(){
 			// Construtos para incializar a GUI 
@@ -79,8 +82,9 @@ public class GUI {
 			      public void actionPerformed(ActionEvent e) {
 			    	  if(! text1.getText().isEmpty()){
 			    		  String str1=text1.getText();
+			    		  System.out.println(str1);
 			    		  DataManagement.fillRules(str1);
-			    		  System.out.println("passou1");
+			    		  fillJtabel();  
 			    	  }
 			      }
 			    });
@@ -148,13 +152,17 @@ public class GUI {
 			JButton GravarMan = new JButton("Gravar");
 			GravarMan.setBounds(300, 72, 89, 23);
 			panel2.add(GravarMan);
+			
+			//headers for the table
+			String[] columns = new String[] {"Nome","Peso"};
+			
+			DefaultTableModel ManModel = new DefaultTableModel(null, columns);
 
-			DefaultListModel<Rule> model = new DefaultListModel<Rule>();
-			ManList = new JList<Rule>(model);
-			JScrollPane scrollPane = new JScrollPane(ManList);
-			scrollPane.setBounds(10, 10, 250, 130);
-			//scrollPane.setBackground(new Color(240,240,240));
-			panel2.add(scrollPane);
+			ManTable = new JTable(ManModel);
+
+			JScrollPane ManscrollPane = new JScrollPane(ManTable);
+			ManscrollPane.setBounds(10, 10, 250, 130);
+			panel2.add(ManscrollPane);
 
 			JLabel FN = new JLabel("FN:");
 			FN.setBounds(21, 145, 57, 23);
@@ -202,7 +210,7 @@ public class GUI {
 			JButton AvaliarAuto = new JButton("Avaliar");
 			AvaliarAuto.setBounds(300, 117, 89, 23);
 			panel3.add(AvaliarAuto);
-
+			
 			//headers for the table
 			String[] columns = new String[] {"Nome","Peso"};
 			
@@ -214,18 +222,6 @@ public class GUI {
 			JScrollPane AutoscrollPane = new JScrollPane(AutoTable);
 			AutoscrollPane.setBounds(10, 10, 250, 130);
 			panel3.add(AutoscrollPane);
-
-					
-//			DefaultListModel<Rule> model = new DefaultListModel<Rule>();
-//			AutoList = new JList<Rule>(model);
-			JScrollPane scrollPane = new JScrollPane(AutoList);
-			scrollPane.setBounds(10, 10, 250, 130);
-			//scrollPane.setBackground(new Color(240,240,240));
-			panel3.add(scrollPane);
-
-			JTable table = new JTable(336, 2);
-			JScrollPane scrollpane = new JScrollPane(table);
-			panel3.add(table);
 			
 			JLabel FN = new JLabel("FN:");
 			FN.setBounds(21, 145, 57, 23);
@@ -249,6 +245,35 @@ public class GUI {
 
 
 		}
-
+		
+		private void fillJtabel() {
+			
+			ManList = new ArrayList<Rule>();
+			AutoList = new ArrayList<Rule>();
+	
+			ManList.addAll(DataManagement.getRules());
+			AutoList.addAll(DataManagement.getRules());
+			System.out.println(DataManagement.getRules().size());
+			 //headers for the table
+	        String[] columns = new String[] {"Nome", "Peso"};
+	         
+	        //actual data for the table in a 2d array
+	        Object[][] Autodata = new Object[AutoList.size()][2];
+	        Object[][] Mandata = new Object[ManList.size()][2];
+	        
+	        for(int i =0; i<ManList.size(); i++) {
+	        	Autodata[i][0] = AutoList.get(i).getName();
+	        	Autodata[i][1] = AutoList.get(i).getValue();
+	        	Mandata[i][0] = ManList.get(i).getName();
+	        	Mandata[i][1] = ManList.get(i).getValue();
+	        }
+	        
+	      //create table with data
+	       DefaultTableModel AutoModel = new DefaultTableModel(Autodata, columns);
+	       DefaultTableModel ManModel = new DefaultTableModel(Mandata, columns);
+	        
+	       AutoTable.setModel(AutoModel);
+	       ManTable.setModel(ManModel);
+		}
 
 }

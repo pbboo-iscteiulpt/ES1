@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JTextField;
+
 public class DataManagement {
 	
 	private static List<Rule> rules;
 	private static List<Email> spam;
 	private static List<Email> ham;
+	private GUI gui;
 	
 	
 	public DataManagement() {
@@ -111,4 +114,16 @@ public class DataManagement {
 		return ham;
 	}
 	
+	public static void setFN(JTextField FN, List<Email> temp){
+		int fn = 0;
+		for(Email e : temp){
+			for(Email m: ham){
+				if((e.getName().equals(m.getName()))&&(e.getType().equals("SPAM"))){
+					fn++;
+				}
+			}
+		}
+		FN.setText("");
+		FN.setText(Integer.toString(fn));
+	}
 }
