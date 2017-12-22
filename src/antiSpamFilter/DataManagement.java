@@ -1,5 +1,6 @@
 package antiSpamFilter;
 
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +13,10 @@ import java.util.Scanner;
 
 import javax.swing.JTextField;
 
+/**
+ * @author Utilizador
+ *
+ */
 public class DataManagement {
 
 	private static List<Rule> rules;
@@ -20,13 +25,16 @@ public class DataManagement {
 	private GUI gui;
 
 
-
 	public DataManagement() {
 		rules = new ArrayList<Rule>();
 		spam = new ArrayList<Email>();
 		ham = new ArrayList<Email>();
 	}
 
+	/**
+	 * Função para preencher um lista de rules, dada a path do ficheiro onde as mesmas se encontram
+	 * @param path - Caminho para o ficheiro
+	 */
 	public static void fillRules(String path) {
 		try {
 			Scanner s = new Scanner(new File(path));
@@ -39,9 +47,7 @@ public class DataManagement {
 
 				if(v.length==2) {
 					
-					//System.out.println("o valor " + v[1]);
 					r.setValue(Double.parseDouble(v[1]));
-					//System.out.println(r.getValue());
 
 				}
 
@@ -57,6 +63,10 @@ public class DataManagement {
 
 	}
 
+	/**
+	 * 	Função para preencher um lista de Emails que são SPAM, dada a path do ficheiro onde os mesmos se encontram.
+	 * @param path - Caminho para o ficheiro
+	 */
 	public static void fillSpam(String path) {
 
 		try {
@@ -85,6 +95,10 @@ public class DataManagement {
 
 	}
 
+	/**
+	 * Função para preencher um lista de Emails que são HAM, dada a path do ficheiro onde os mesmos se encontram. 
+	 * @param path - Caminho para o ficheiro
+	 */
 	public static void fillHam(String path) {
 
 		try {
@@ -111,18 +125,38 @@ public class DataManagement {
 		}
 	}
 
+	/**
+	 * Função de obtenção da lista de rules
+	 * @return Lista de regras
+	 */
 	public static List<Rule> getRules() {
 		return rules;
 	}
 
+	/**
+	 * Função de obtenção da lista de Emails SPAM
+	 * @return Lista de ficheiros que estão no spam.log
+	 */
 	public static List<Email> getSpam() {
 		return spam;
 	}
 
+	/**
+	 * Função de obtenção da lista de Emails HAM
+	 * @return Lista de ficheiros que estão no ham.log
+	 */
 	public static List<Email> getHam() {
 		return ham;
 	}
 
+	/**
+	 * Função para classificar as mensagens como HAM ou SPAM
+	 * @param s - Booleano que indica se a path do spam.log é avaliada (se a respetiva checkbox está selecionada)
+	 * @param h - Booleano que indica se a path do ham.log é avaliada (se a respetiva checkbox está selecionada)
+	 * @param FN - Número de FN (mensagens SPAM consideradas HAM)
+	 * @param FP - Número de FP (mensagens HAM consideradas SPAM)
+	 * @param rules - Lista de regras recebida
+	 */
 	public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, List<Rule> rules) {
 
 		ArrayList<Email> temp = new ArrayList<Email>();
@@ -145,11 +179,9 @@ public class DataManagement {
 				}
 			}
 			if(a>=5) {
-				System.out.println("SPAM");
 				e.setType("SPAM");
 			}
 			else {
-				System.out.println("SPAM");
 				e.setType("HAM");
 			}
 
@@ -160,6 +192,11 @@ public class DataManagement {
 
 	}
 
+	/**
+	 * Função para calcular os FN
+	 * @param temp - Lista de Emails recebida
+	 * @param FN - Número de FN (mensagens SPAM consideradas HAM)
+	 */
 	public static void setFN(List<Email> temp,JTextField FN){
 		int fn = 0;
 		for(Email e : temp){
@@ -169,12 +206,14 @@ public class DataManagement {
 				}
 			}
 		}
-
-		System.out.println(fn);
-
 		FN.setText(String.valueOf(fn));
 	}
 
+	/**
+	 * 	Função para calcular os FN
+	 * @param temp - Lista de Emails recebida
+	 * @param FP - Número de FP (mensagens HAM consideradas SPAM)
+	 */
 	public static void setFP(List<Email> temp,JTextField FP) {
 		int fp=0;
 		for(Email e: temp) {
@@ -185,11 +224,13 @@ public class DataManagement {
 			}
 		}
 
-		System.out.println(fp);
-
 		FP.setText(String.valueOf(fp));
 	}
-
+	
+	/**
+	 * Função para guardar as regras e respetivos valores 
+	 * @param list - Lista de regras recebida
+	 */
 	public static void Save(List <Rule> list){
 
 		try {

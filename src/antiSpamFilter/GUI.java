@@ -1,5 +1,6 @@
 package antiSpamFilter;
 
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -118,7 +119,6 @@ public class GUI {
 				if(! text2.getText().isEmpty()){
 					String str2=text2.getText();
 					DataManagement.fillHam(str2);
-					System.out.println("passou2");
 				}
 			}
 		});
@@ -134,7 +134,6 @@ public class GUI {
 				if(! text3.getText().isEmpty()){
 					String str3=text3.getText();
 					DataManagement.fillSpam(str3);
-					System.out.println("passou3");
 				}
 			}
 		});

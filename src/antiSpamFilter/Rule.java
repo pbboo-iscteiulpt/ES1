@@ -1,5 +1,6 @@
 package antiSpamFilter;
 
+
 public class Rule {
 
 	private String name;
@@ -14,14 +15,23 @@ public class Rule {
 		this.name = name;
 	}
 
+	/**
+	 * Obter o valor da regra
+	 * @return Valor da regra
+	 */
 	public double getValue() {
 		return value;
 	}
 
+	/**
+	 * Atualizar o valor da regra
+	 * @param rr - Valor da regra
+	 */
 	public void setValue(double rr) {
 		this.value = rr;
 	}
 
+	//Obter o nome da regra
 	public String getName() {
 		return name;
 	}
