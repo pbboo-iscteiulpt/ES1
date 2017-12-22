@@ -9,4 +9,4 @@ Identificação do número, nome e papel de cada membro do grupo: 72772, Beatriz
                                                                
 Identificação da variante do projeto desenvolvida: AntiSpamConfigurationForLeisurelMailbox
 
-Link para um vídeo no youtube com a demonstração da aplicação final desenvolvida (ex: http://...)
+Link para um vídeo no youtube com a demonstração da aplicação final desenvolvida: https://youtu.be/ujSfB-ZlCD4
