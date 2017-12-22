@@ -3,9 +3,9 @@ package antiSpamFilter;
 public class Rule {
 
 	private String name;
-	private int value;
+	private double value;
 	
-	public Rule(String name, int value) {
+	public Rule(String name, double value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -14,12 +14,12 @@ public class Rule {
 		this.name = name;
 	}
 
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
-		this.value = value;
+	public void setValue(double rr) {
+		this.value = rr;
 	}
 
 	public String getName() {

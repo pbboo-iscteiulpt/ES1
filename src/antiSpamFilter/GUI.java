@@ -36,15 +36,12 @@ public class GUI {
 	private JPanel panel1;
 	private JPanel panel2;
 	private JPanel panel3;
-	JLabel rules;
-	JLabel ham;
-	JLabel spam;
-	JTextField text1;
-	JTextField text2;
-	JTextField text3;
-	JCheckBox rulescheck;
-	JCheckBox hamcheck;
-	JCheckBox spamcheck;
+	private JTextField text1;
+	private JTextField text2;
+	private JTextField text3;
+	private JCheckBox rulescheck;
+	private JCheckBox hamcheck;
+	private JCheckBox spamcheck;
 
 	//Objetos do painel2
 	private JTextField ManFN;
@@ -64,6 +61,10 @@ public class GUI {
 		frame= new JFrame("Anti-Spam Filter");
 		init();
 		frame.setVisible(true);		
+
+		ManList = new ArrayList<Rule>();
+		AutoList = new ArrayList<Rule>();
+
 	}
 
 	public void init(){
@@ -76,20 +77,31 @@ public class GUI {
 		panel1= new JPanel();
 		panel1.setLayout(new GridLayout(3,3));
 
-		rules= new JLabel("PATH rules.cf");
-		ham= new JLabel("PATH ham.log");
-		spam= new JLabel("PATH spam.log");
+		JLabel rules= new JLabel("PATH rules.cf");
+		JLabel ham= new JLabel("PATH ham.log");
+		JLabel spam= new JLabel("PATH spam.log");
 
 		text1= new JTextField();
 		text1.setBackground(Color.WHITE);
 		text1.setColumns(30);
+		
+		
+		text1.setText("ficheiros/rules.cf");
 
 		text1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(! text1.getText().isEmpty()){
 					String str1=text1.getText();
-					System.out.println(str1);
+					//System.out.println(str1);
 					DataManagement.fillRules(str1);
+
+					for(Rule a : DataManagement.getRules()) {
+						Rule b = new Rule(a.getName(), a.getValue());
+						Rule c = new Rule(a.getName(), a.getValue());
+						ManList.add(b);
+						AutoList.add(c);
+					}
+					
 					fillJtabel();  
 				}
 			}
@@ -98,6 +110,8 @@ public class GUI {
 		text2= new JTextField();
 		text2.setBackground(Color.WHITE);
 		text2.setColumns(30);
+		
+		text2.setText("ficheiros/ham.log");
 
 		text2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,6 +126,8 @@ public class GUI {
 		text3= new JTextField();
 		text3.setBackground(Color.WHITE);
 		text3.setColumns(30);
+		
+		text3.setText("ficheiros/spam.log");
 
 		text3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,13 +183,16 @@ public class GUI {
 
 		JButton GravarMan = new JButton("Gravar");
 		GravarMan.setBounds(300, 72, 89, 23);
+		
 		GravarMan.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				DataManagement.Save(ManList);
+				
 			}
 		});
+
 		panel2.add(GravarMan);
 
 		//headers for the table
@@ -237,18 +256,28 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				for(Rule a:AutoList) {
+					int r = (int) (Math.random()*1000-500);
+					double rr = (double) (r*0.01);
 
+					a.setValue(rr);
+				}
+
+				fillJtabel();
 			}
 		});
 		panel3.add(GerarAuto);
 
 		JButton GravarAuto = new JButton("Gravar");
 		GravarAuto.setBounds(300, 72, 89, 23);
+		
 		GravarAuto.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				DataManagement.Save(AutoList);
+				
 			}
 		});
 		panel3.add(GravarAuto);
@@ -256,6 +285,7 @@ public class GUI {
 		JButton AvaliarAuto = new JButton("Avaliar");
 		AvaliarAuto.setBounds(300, 117, 89, 23);
 		AvaliarAuto.addActionListener(new ActionListener() {
+
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -273,9 +303,9 @@ public class GUI {
 
 
 		AutoTable = new JTable(AutoModel);
-		
+
 		AutoTable.setEnabled(false);
-		
+
 		JScrollPane AutoscrollPane = new JScrollPane(AutoTable);
 		AutoscrollPane.setBounds(10, 10, 250, 130);
 
@@ -304,14 +334,8 @@ public class GUI {
 
 	}
 
-	private void fillJtabel() {
+	private void fillJtabel() {		
 
-		ManList = new ArrayList<Rule>();
-		AutoList = new ArrayList<Rule>();
-
-		ManList.addAll(DataManagement.getRules());
-		AutoList.addAll(DataManagement.getRules());
-		System.out.println(DataManagement.getRules().size());
 		//headers for the table
 		String[] columns = new String[] {"Nome", "Peso"};
 
@@ -320,10 +344,14 @@ public class GUI {
 		Object[][] Mandata = new Object[ManList.size()][2];
 
 		for(int i =0; i<ManList.size(); i++) {
-			Autodata[i][0] = AutoList.get(i).getName();
-			Autodata[i][1] = AutoList.get(i).getValue();
 			Mandata[i][0] = ManList.get(i).getName();
 			Mandata[i][1] = ManList.get(i).getValue();
+			//System.out.println(ManList.get(i).getValue());
+		}
+
+		for(int i =0; i<AutoList.size(); i++) {
+			Autodata[i][0] = AutoList.get(i).getName();
+			Autodata[i][1] = AutoList.get(i).getValue();
 		}
 
 		//create table with data
@@ -342,10 +370,8 @@ public class GUI {
 
 			String s = (String) table.getValueAt(row,0);
 			String b = (String) String.valueOf(table.getValueAt(row,1));
-			
-			Rule a = new Rule(s,Integer.parseInt(b));
-			System.out.println("Nome  " + a.getName());
-			System.out.println("valor  " + a.getValue());
+
+			Rule a = new Rule(s,Double.parseDouble(b));
 			list.add(a); 
 
 

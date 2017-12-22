@@ -1,7 +1,10 @@
 package antiSpamFilter;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,80 +13,85 @@ import java.util.Scanner;
 import javax.swing.JTextField;
 
 public class DataManagement {
-	
+
 	private static List<Rule> rules;
 	private static List<Email> spam;
 	private static List<Email> ham;
 	private GUI gui;
-	
-	
+
+
+
 	public DataManagement() {
 		rules = new ArrayList<Rule>();
 		spam = new ArrayList<Email>();
 		ham = new ArrayList<Email>();
 	}
-	
+
 	public static void fillRules(String path) {
 		try {
 			Scanner s = new Scanner(new File(path));
-			
+
 			while(s.hasNextLine()) {
 				String line = s.nextLine();
 				String[] v = line.split("	");
-				
+
 				Rule r = new Rule(v[0]);
-				
+
 				if(v.length==2) {
-					r.setValue(Integer.parseInt(v[1]));
+					
+					//System.out.println("o valor " + v[1]);
+					r.setValue(Double.parseDouble(v[1]));
+					//System.out.println(r.getValue());
+
 				}
-				
+
 				rules.add(r);
 			}
-			
+
 			s.close();
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 	}
-	
+
 	public static void fillSpam(String path) {
-		
+
 		try {
 			Scanner s = new Scanner(new File(path));
-			
+
 			while(s.hasNextLine()) {
-				
+
 				String line = s.nextLine();
 				String[] v = line.split("	");
-				
+
 				Email e = new Email(v[0]);
-				
+
 				for(int i=1; i< v.length; i++) {
 					e.addTag(v[i]);
-					
+
 				}
 				spam.add(e);
 			}
-			
+
 			s.close();
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 	}
 
 	public static void fillHam(String path) {
-		
+
 		try {
 			Scanner s = new Scanner(new File(path));
-			
+
 			while(s.hasNextLine()) {
-				
+
 				String line = s.nextLine();
 				String[] v = line.split("	");
 
@@ -94,9 +102,9 @@ public class DataManagement {
 				}	
 				ham.add(e);
 			}
-			
+
 			s.close();
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,10 +122,11 @@ public class DataManagement {
 	public static List<Email> getHam() {
 		return ham;
 	}
-	
-public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, List<Rule> rules) {
-		
+
+	public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, List<Rule> rules) {
+
 		ArrayList<Email> temp = new ArrayList<Email>();
+
 
 		if(s==true) {
 			temp.addAll(spam);
@@ -136,20 +145,22 @@ public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, L
 				}
 			}
 			if(a>=5) {
+				System.out.println("SPAM");
 				e.setType("SPAM");
 			}
 			else {
+				System.out.println("SPAM");
 				e.setType("HAM");
 			}
 
 		}
 
-		setFN(FN,temp);
-		setFP(FP,temp);
+		setFN(temp, FN);
+		setFP(temp, FP);
 
 	}
-	
-	public static void setFN(JTextField FN, List<Email> temp){
+
+	public static void setFN(List<Email> temp,JTextField FN){
 		int fn = 0;
 		for(Email e : temp){
 			for(Email m: ham){
@@ -158,13 +169,13 @@ public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, L
 				}
 			}
 		}
-		FN.setText("");
-		FN.setText(Integer.toString(fn));
+
+		System.out.println(fn);
+
+		FN.setText(String.valueOf(fn));
 	}
-	
-	private static void setFP(JTextField FP, List<Email> temp) {
 
-
+	public static void setFP(List<Email> temp,JTextField FP) {
 		int fp=0;
 		for(Email e: temp) {
 			for(Email s:spam) {
@@ -174,26 +185,31 @@ public static void avaliar(boolean s, boolean h, JTextField FN, JTextField FP, L
 			}
 		}
 
-		FP.setText("");
-		FP.setText(Integer.toString(fp));
-	}
-	
-	public static void Save(List <Rule> list){
-		
-		try {
-			PrintWriter pw= new PrintWriter(new File("ficheiros/rules.cf"));
-			for(Rule r: list){
-				pw.println(r.toString());
-			}
-			pw.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		System.out.println(fp);
+
+		FP.setText(String.valueOf(fp));
 	}
 
+	public static void Save(List <Rule> list){
+
+		try {
+
+			BufferedWriter pw;
+			try {
+				pw = new BufferedWriter(new FileWriter("ficheiros/rules.cf"));
+
+				for(Rule r: list){
+					pw.write(r.toString());
+					pw.newLine();
+				}
+				pw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}finally {}
+	}
 
 }
-
 
