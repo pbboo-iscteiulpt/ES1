@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"antiSpamFilterAuto","l":"AntiSpamFilterAutomaticConfiguration"},{"p":"antiSpamFilterAuto","l":"AntiSpamFilterProblem"},{"p":"antiSpamFilter","l":"DataManagement"},{"p":"antiSpamFilter","l":"Email"},{"p":"antiSpamFilter","l":"GUI"},{"p":"antiSpamFilter","l":"Main"},{"p":"antiSpamFilter","l":"Rule"}]
